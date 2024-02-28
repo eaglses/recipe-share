@@ -8,7 +8,7 @@ steps = [
             password VARCHAR(100) NOT NULL,
             first_name VARCHAR(100) NOT NULL,
             last_name VARCHAR(100) NOT NULL,
-            profile_image VARCHAR(256)
+            profile_image VARCHAR(100)
         );
         """,
         # "Down" SQL statement
@@ -18,3 +18,5 @@ steps = [
     ]
 
 ]
+
+

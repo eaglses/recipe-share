@@ -4,6 +4,7 @@ steps = [
         """
         CREATE TABLE user_group (
             id SERIAL PRIMARY KEY,
+            owner_id INT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
             user_id INT REFERENCES users (id) ON DELETE CASCADE NOT NULL
            
         );
