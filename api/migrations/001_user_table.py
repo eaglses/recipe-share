@@ -13,7 +13,7 @@ steps = [
         """,
         # "Down" SQL statement
         """
-        DROP TABLE user;
+        DROP TABLE users;
         """
     ]
 

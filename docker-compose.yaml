@@ -8,6 +8,7 @@ services:
     environment:
       CORS_HOST: http://localhost:3000
       DATABASE_URL: postgresql://user:secret@postgres/recipe-db
+      SIGNING_KEY: ey98119cb2df992b3bcb108de1174f3d45606402ee655ca7222572a8ed81f3fcf4
     build:
       context: api
       dockerfile: Dockerfile.dev
@@ -30,6 +31,8 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+      DATABASE_URL: postgresql://user:secret@postgres/recipe-db
+
 
 
   postgres:
