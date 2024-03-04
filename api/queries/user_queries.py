@@ -51,6 +51,97 @@ class UserOutWithPassword(UserOut):
 
 
 class UserRepository:
+    def record_to_user_out_with_pw(self, record) -> UserOutWithPassword:
+        user_dict = {
+            "id": record[0],
+            "email": record[1],
+            "hashed_password": record[2],
+            "first_name": record[3],
+            "last_name": record[4],
+            "profile_image": record[5],
+        }
+        return UserOutWithPassword(**user_dict)
+
+    def record_to_user_out(self, record):
+        return UserOut(
+            id=record[0],
+            email=record[1],
+            first_name=record[2],
+            last_name=record[3],
+            profile_image=record[4],
+        )
+
+    def delete(self, user_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM users
+                        WHERE id = %s
+                        """,
+                        [user_id],
+                    )
+                    return True
+        except Exception:
+            raise HTTPException(
+                status_code=400, detail="Could not delete user"
+            )
+
+    def update(
+        self, user_id: int, user: UserUpdateIn
+    ) -> Union[UserOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE users
+                        SET
+                        email = %s,
+                        first_name = %s,
+                        last_name = %s,
+                        profile_image = %s
+
+                        WHERE id = %s
+                        """,
+                        [
+                            user.email,
+                            user.first_name,
+                            user.last_name,
+                            user.profile_image,
+                            user_id,
+                        ],
+                    )
+                    old_data = user.dict()
+                    return UserOut(id=user_id, **old_data)
+        except Exception:
+            raise HTTPException(
+                status_code=400, detail="Could not update user"
+            )
+
+    def get_all(self) -> Union[List[UserOut], Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT id, email,
+                        first_name,
+                        last_name,
+                        profile_image
+                        FROM users
+                        ORDER BY id;
+                        """,
+                    )
+                    return [
+                        self.record_to_user_out(record) for record in result
+                    ]
+        except Exception:
+            raise HTTPException(
+                status_code=400, detail="Could not get all users"
+            )
+
     def get(self, username: str) -> UserOutWithPassword:
         try:
             with pool.connection() as conn:
