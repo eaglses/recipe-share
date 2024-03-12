@@ -3,3 +3,6 @@ from fastapi import (
     APIRouter,
 )
 from authenticator import authenticator
+
+
+router = APIRouter(tags=["group"])

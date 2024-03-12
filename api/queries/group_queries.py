@@ -6,3 +6,8 @@ from fastapi import HTTPException
 from datetime import datetime
 
 class Member(BaseModel)
+    user_id: int
+
+class NewGroup(BaseModel)
+    ownerId: int
+
