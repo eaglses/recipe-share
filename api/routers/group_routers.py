@@ -2,15 +2,21 @@ from fastapi import (
     Depends,
     APIRouter,
     Response,
+    status,
+    HTTPException,
 )
 from authenticator import authenticator
-from typing import Union, Optional, List
+from typing import (
+    Union,
+    Optional,
+    # List,
+    )
 from queries.user_queries import Error
 from queries.group_queries import (
     groupRepo,
     DuplicateGroupError,
     GroupOwnerID,
-    Member,
+    # Member,
     NewGroup,
 )
 

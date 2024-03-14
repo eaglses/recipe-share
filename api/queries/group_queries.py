@@ -1,15 +1,18 @@
 from pydantic import BaseModel
-from typing import Optional, List, Union
+from typing import Optional, Union
 from queries.pool import pool
 from fastapi import HTTPException
-from datetime import datetime
+# from datetime import datetime
 from queries.user_queries import Error
+
 
 class DuplicateGroupError(ValueError):
     pass
 
+
 class Member(BaseModel):
     user_id: int
+
 
 class NewGroup(BaseModel):
     group_name: str
