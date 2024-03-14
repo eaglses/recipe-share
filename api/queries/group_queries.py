@@ -3,6 +3,7 @@ from typing import Optional, List, Union
 from queries.pool import pool
 from fastapi import HTTPException
 from datetime import datetime
+from queries.user_queries import Error
 
 class DuplicateGroupError(ValueError):
     pass
@@ -32,6 +33,49 @@ class groupRepo:
             owner_id=record[1],
             group_name=record[2],
         )
+
+    def delete(self, group_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM user_group
+                        WHERE id = %s
+                        """,
+                        [group_id],
+                    )
+                    return True
+        except Exception:
+            return False
+
+    def update(
+        self, group_id: int, new_group: NewGroup, owner_id: int
+    ) -> Union[GroupOwnerID, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE user_group
+                        SET                         
+                        group_name = %s,
+                        owner_id  = %s
+                        WHERE id = %s;
+                        """,
+                        [
+                            new_group.group_name,
+                            owner_id,
+                            group_id,
+                        ],
+                    )
+                    conn.commit()
+                updated_group = self.get_group(group_id)
+                return updated_group
+        except Exception:
+            raise HTTPException(
+                status_code=403, detail="User cannot update event????"
+            )
 
     def get_group(self, group_id: int) -> Optional[GroupOwnerID]:
         try:
@@ -66,7 +110,7 @@ class groupRepo:
                         """
                         INSERT INTO user_group (                           
                             group_name,
-                            owner_id                                                
+                            owner_id                                           
                         )
                         VALUES
                             (%s, %s)
