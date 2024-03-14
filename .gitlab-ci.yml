@@ -11,9 +11,8 @@ lint-test-job:
   image: python:3-bullseye
   stage: test
   script:
-  # formatting removed for switching to black formater
-    # - pip install flake8
-    # - flake8 api
+    - pip install flake8
+    - flake8 api
 
 # # Run the unit tests
 # api-unit-tests-job:
