@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, Union
 from queries.pool import pool
 from fastapi import HTTPException
+
 # from datetime import datetime
 from queries.user_queries import Error
 
@@ -22,6 +23,7 @@ class GroupOwnerID(BaseModel):
     id: int
     owner_id: int
     group_name: str
+
 
 # class GroupeList(BaseModel):
 #     ownerId: int
@@ -61,7 +63,7 @@ class groupRepo:
                     db.execute(
                         """
                         UPDATE user_group
-                        SET                         
+                        SET                        
                         group_name = %s,
                         owner_id  = %s
                         WHERE id = %s;
@@ -111,9 +113,9 @@ class groupRepo:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        INSERT INTO user_group (                           
+                        INSERT INTO user_group (
                             group_name,
-                            owner_id                                           
+                            owner_id
                         )
                         VALUES
                             (%s, %s)
