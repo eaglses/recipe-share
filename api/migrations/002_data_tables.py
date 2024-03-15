@@ -5,14 +5,28 @@ steps = [
         CREATE TABLE user_group (
             id SERIAL PRIMARY KEY,
             owner_id INT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
-            user_id INT REFERENCES users (id) ON DELETE CASCADE NOT NULL
-           
+            group_name VARCHAR(150)         
         );
         """,
         # "Down" SQL statement
         """
         DROP TABLE user_group;
+        """,
+    ],
+    [
+        # "Up" SQL statement
         """
+        CREATE TABLE group_members (
+            group_id INT REFERENCES user_group (id) ON DELETE CASCADE NOT NULL,
+            user_id INT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+            approved BOOL NOT NULL
+            
+        );
+        """,
+        # "Down" SQL statement
+        """
+        DROP TABLE group_members;
+        """,
     ],
     [
         # "Up" SQL statement
@@ -26,7 +40,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE type;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -44,7 +58,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE recipe;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -60,7 +74,6 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE ingredient;
-        """
-    ]
-
+        """,
+    ],
 ]
