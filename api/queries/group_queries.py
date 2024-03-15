@@ -63,7 +63,7 @@ class groupRepo:
                     db.execute(
                         """
                         UPDATE user_group
-                        SET                        
+                        SET
                         group_name = %s,
                         owner_id  = %s
                         WHERE id = %s;
