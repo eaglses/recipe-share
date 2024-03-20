@@ -5,19 +5,18 @@ from fastapi import (
 from authenticator import authenticator
 
 from queries.member_queries import (
-    AttendeesOut,
-    AttendeesRepo,
-    Attendee,
-    EventsOut,
-)
+    Member,
+    MembersList,
+    MembersRepo
+    )
 
 router = APIRouter(tags=["members"])
 
 
-@router.post("/api/group/{group_id}/member", response_model=Attendee)
-def create_attendee(
+@router.post("/api/group/{group_id}/member", response_model=Member)
+def create_member(
     group_id: int,
-    repo: AttendeesRepo = Depends(),
+    repo: MembersRepo = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     user_id = account_data["id"]

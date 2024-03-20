@@ -3,7 +3,7 @@ from typing import Optional, List
 from queries.pool import pool
 from .user_queries import BasicUserOut
 from fastapi import HTTPException
-from datetime import datetime
+# from datetime import datetime
 
 
 class Member(BaseModel):
@@ -11,7 +11,7 @@ class Member(BaseModel):
     member_id: int
 
 
-class MemersList(BaseModel):
+class MembersList(BaseModel):
     attendees: Optional[List[BasicUserOut]]
     event_id: int
 
@@ -24,7 +24,7 @@ class MembersRepo:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        INSERT INTO attendees (
+                        INSERT INTO group_members (
                             group_id,
                             user_id,
                             approved
@@ -32,11 +32,7 @@ class MembersRepo:
                         VALUES
                         (%s, %s, %s);
                         """,
-                        [
-                            group_id,
-                            user_id,
-                            False
-                        ],
+                        [group_id, user_id, False],
                     )
 
                     return Member(
