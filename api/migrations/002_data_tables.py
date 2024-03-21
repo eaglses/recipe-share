@@ -17,8 +17,8 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE group_members (
-            group_id INT REFERENCES user_group (id) ON DELETE CASCADE NOT NULL,
-            user_id INT REFERENCES users (id) ON DELETE CASCADE NOT NULL,
+            group_id INT REFERENCES user_group(id) ON DELETE CASCADE NOT NULL,
+            user_id INT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
             approved BOOL NOT NULL
             
         );

@@ -3,12 +3,19 @@ from typing import Optional, List
 from queries.pool import pool
 from .user_queries import BasicUserOut
 from fastapi import HTTPException
+
 # from datetime import datetime
 
 
 class Member(BaseModel):
     group_id: int
     member_id: int
+
+
+class MemberApproval(BaseModel):
+    group_id: int
+    user_id: int
+    approved: bool
 
 
 class MembersList(BaseModel):
@@ -18,7 +25,9 @@ class MembersList(BaseModel):
 
 class MembersRepo:
 
-    def create(self, group_id: int, user_id: int) -> Member:
+    def create(
+        self, group_id: int, user_id: int, approved: bool
+    ) -> MemberApproval:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -32,12 +41,21 @@ class MembersRepo:
                         VALUES
                         (%s, %s, %s);
                         """,
-                        [group_id, user_id, False],
+                        [
+                            group_id,
+                            user_id,
+                            approved,
+                        ],
                     )
-
-                    return Member(
-                        event_id=group_id,
+                    print(
+                        group_id,
+                        user_id,
+                        approved,
+                    )
+                    return MemberApproval(
+                        group_id=group_id,
                         user_id=user_id,
+                        approved=approved,
                     )
-        except Exception:
-            raise HTTPException(status_code=500, detail="Something went wrong")
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
