@@ -80,7 +80,7 @@ def get_one_user(
     repo: UserRepository = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> UserOut:
-    user = repo.get_one(user_id)
+    user = repo.get_one_user(user_id)
     if user is None:
         response.status_code = 404
     return user

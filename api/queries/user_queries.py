@@ -142,7 +142,7 @@ class UserRepository:
                 status_code=400, detail="Could not get all users"
             )
 
-    def get(self, username: str) -> UserOutWithPassword:
+    def get_one_user(self, user_id: int) -> UserOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -156,9 +156,9 @@ class UserRepository:
                         last_name,
                         profile_image
                         FROM users
-                        WHERE email = %s;
+                        WHERE id = %s;
                         """,
-                        [username],
+                        [user_id],
                     )
                     record = result.fetchone()
                     if record is None:

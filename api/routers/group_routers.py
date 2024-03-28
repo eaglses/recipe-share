@@ -54,7 +54,7 @@ def update_group(
     return repo.update(group_id, group, owner_id)
 
 
-@router.get("/api/owner/{group_id}", response_model=Optional[GroupOwnerID])
+@router.get("/api/group/{group_id}", response_model=Optional[GroupOwnerID])
 def get_group(
     group_id: int,
     response: Response,
